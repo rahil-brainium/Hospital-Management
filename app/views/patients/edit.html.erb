@@ -1,0 +1,26 @@
+<%= form_for (@patient), url: "/patients/patient_update/#{@patient.id}" do |f| %>
+ <div class="field">
+    <%= f.label :Name %>:
+    <%= f.text_field :name %>
+ </div>
+ <div class="field">
+    <%= f.label :Email %>:
+    <%= f.email_field :email %>
+ </div>
+ <div class="field">
+    <%= f.label :sex %>
+    <%= f.radio_button :sex, 'male', :checked => true %> male
+    <%= f.radio_button :sex, 'female' %> female
+ </div>
+ <div class="field">
+    <%= f.label :Phone %>:
+    <%= f.text_field :phone %>
+ </div>
+ <div class="field">
+    <%= f.label :Disease_Type %>:
+    <%= f.text_field :disease_type %>
+ </div>
+ <div class="actions">
+    <%= f.submit %>
+ </div>
+<% end %>

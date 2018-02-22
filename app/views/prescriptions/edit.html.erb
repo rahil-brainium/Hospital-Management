@@ -1,0 +1,14 @@
+<%= form_for (@prescription), url: "/prescriptions/prescriptions_update/#{@prescription.id}" do |f| %>
+<div class="field">
+    <%= f.label :Type %>:
+    <%= f.text_field :med_type %>
+ </div>
+ <div class="field">
+    <%= f.label :Name %>:
+    <%= f.text_field :name %>
+ </div>
+ <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+

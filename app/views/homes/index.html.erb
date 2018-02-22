@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<% if current_user.role == "admin" %>
+<h1>Welcome Admin <%= link_to "homes/#{current_user.id}/show" do %>
+    <span class="glyphicon glyphicon-user"></span>
+<% end %></h1>
+<p><%= link_to('Doctors',homes_doctors_index_path) %>
+	<%= link_to('Receptionists',homes_receptionists_index_path)%>
+</p>
+<%else %>
+
+<b>Logged in as : <%= current_user.name %></b><br>
+<b>View Profile </b>
+<%= link_to "/homes/#{current_user.id}/show" do %>
+    <span class="glyphicon glyphicon-user"></span>
+<% end %>
+
+<table class= "table table-hover table-striped">
+  <tr>
+    <th>Sl.no</th>
+  <% if current_user.role != "receptionist" %>
+    <th>Type</th>
+    <th>Name</th>
+  <%end %>
+    <th>Patient Name</th>
+    <th>Doctor Name</th>
+  <% if current_user.role != "receptionist" %>  
+    <th></th>
+    <th></th>
+  <%end %>
+  </tr>
+  <% @prescriptions.each do |p| %>
+    <tr>
+      <td><%= p.id %></td>
+    <% if current_user.role != "receptionist" %>
+      <td><%= p.med_type %></td>
+      <td><%= p.name %></td> 
+    <%end %>
+      <td><%=link_to "#{p.patient.name}",controller: "patients", action: "show", id: "#{p.patient.id}" %></td>  
+      <td><%= p.user.name %></td>  
+      <% if current_user.role == "doctor"%>
+        <td>
+          <%= link_to "/prescriptions/#{p.id}/edit" do %>
+            <span class="glyphicon glyphicon-pencil"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "/prescriptions/#{p.id}",data: {confirm: "Are you sure?"},method: :delete  do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+
+

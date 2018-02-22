@@ -1,0 +1,34 @@
+<p>
+  <strong>Name:</strong>
+  <%= @patient.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @patient.email %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @patient.phone %>
+</p>
+
+<p>
+  <strong>Sex:</strong>
+  <%= @patient.sex %>
+</p>
+
+<p>
+  <strong>Disease Type:</strong>
+  <%= @patient.disease_type %>
+</p>
+<p>
+  <strong>Doctor Name:</strong>
+  <%=@patient.prescription.user.name %>
+</p>
+<% if current_user.role == "receptionist" %>
+<%= link_to "#{@patient.id}/edit" do %>
+   Edit <span class="glyphicon glyphicon-pencil"></span>
+<% end %>
+<% end %>
+

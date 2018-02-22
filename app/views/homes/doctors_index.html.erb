@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<%= link_to "Invite Doctor" %>
+<table class= "table table-hover table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Email id</th>
+    <th>Phone Number</th>
+    <th>Sex</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% @users.each do |u| %>
+    <tr id = "user_<%= u.id%>">
+      <td><%= u.name %></td>
+      <td><%= u.email %></td>
+      <td><%= u.phone %></td>
+      <td><%= u.sex %></td>
+      <div class="container">
+        <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit <%= u.name %></h4>
+              </div>
+              <div class="modal-body">
+                <img src="/assets/source.gif" style="height:30px;width:30px;text-align: center;">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>     
+          </div>
+        </div>
+      </div>
+      <% if current_user.role == "admin" || current_user.id == u.id %>
+        <td>
+          <%= link_to "#{u.id}/show" do %>
+            <span class="glyphicon glyphicon-user"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "javascript:void(0)",'data-toggle'=>"modal", 'data-target'=>"#myModal",:id => "modal_edit","data-id" => u.id do %>
+            <span class="glyphicon glyphicon-pencil"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "javascript:void(0)",method: :delete,:class => "delete_doctor_ajax","data-id" => u.id  do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<script>
+  $("#modal_edit").click(function(e){ 
+      var id = $(this).data('id'); 
+      $.ajax({ 
+        type: 'GET',
+        url: id+"/edit",
+        success: function(data){
+          $(".modal-body").html(data);
+      }, 
+      error: function(data){ alert('error'); } })
+  });
+  $(".delete_doctor_ajax").click(function(){ 
+    var id = $(this).data('id'); 
+    $.ajax({ 
+    type: 'DELETE',
+    url: "/homes/"+id,
+    success: function(data){
+      $("#user_"+id).fadeOut(1000);
+  }, 
+  error: function(data){ alert('error'); } })
+  });
+</script>
+

@@ -1,0 +1,32 @@
+<%= form_for (@user), url: "/homes/users_update/#{@user.id}",:id =>"my_form",:remote => true do |f| %>
+<div class="field">
+  <%= f.label :Name %>:
+  <%= f.text_field :name %>
+</div>
+<div class="field">
+  <%= f.label :sex %>
+  <%= f.radio_button :sex, 'male', :checked => true %> male
+  <%= f.radio_button :sex, 'female' %> female
+</div>
+<div class="field">
+  <%= f.label :Phone %>:
+  <%= f.text_field :phone %>
+</div>
+<div class="actions">
+  <%= f.submit %>
+</div>
+<% end %>
+
+
+<script>
+  var id = <%= @user.id %>
+  $("#edit_user_"+id).on("submit", function(event){
+    $.ajax({
+      success: function(response){
+        console.log(response);
+        //$("#user_"+id).fadeIn();
+        $("#new").replaceWith(response);
+      }
+    });
+  })
+</script>
