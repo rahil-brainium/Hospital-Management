@@ -1,0 +1,59 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<% if flash[:notice] %>
+  <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+<h2><%= t 'devise.invitations.edit.header' %></h2>
+<%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :invitation_token, readonly: true %>
+
+  <% if f.object.class.require_password_on_accepting %>
+  <p><%= f.label :password %><br />
+  <%= f.password_field :password,:required => true,:class=>"form-control" %></p>
+
+  <p><%= f.label :password_confirmation %><br />
+  <%= f.password_field :password_confirmation,:required => true,:class=>"form-control" %></p>
+  <% end %>
+  <p class = "password_error"></p>
+  <p><%= f.submit t("devise.invitations.edit.submit_button"),:class =>"btn btn-success" %></p>
+<% end %>
+<script>
+  $(document).ready(function(){
+    $('#edit_user').on('submit', function(e){
+        var password = $('#user_password').val();
+        var confirm_password = $('#user_password_confirmation').val();
+        if (password == "" && confirm_password == "")
+        {
+          $("#user_password").css('border', '3px solid red');
+          $("#user_password_confirmation").css('border', '3px solid red');
+          e.preventDefault();
+          return;
+        }
+
+        if (password == "")
+        {
+          $("#user_password").css('border', '3px solid red');
+          e.preventDefault();
+          return;
+        }
+        if (confirm_password == "")
+        {
+          $("#user_password_confirmation").css('border', '3px solid red');
+          e.preventDefault();
+          return;
+        }
+    });
+    $("#user_password").keypress(function(){
+      $("#user_password").css('border', '1px solid grey');
+      //$( ".password_error" ).empty();
+
+    });
+    $("#user_password_confirmation").keypress(function(){
+      $("#user_password_confirmation").css('border', '1px solid grey');
+      //$( ".password_error" ).empty();
+
+    });
+});
+</script>

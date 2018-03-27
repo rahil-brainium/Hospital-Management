@@ -1,0 +1,20 @@
+%link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}/
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
+%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+%table.table
+  %tr
+    %th Medicine Type
+    %th Medicine Name
+    %th Prescribed By
+    -if current_user.role != "receptionist"
+      %th Prescription Edit Link
+  - @prescriptions.each do |p|
+    
+    %tr 
+      %td=p.med_type
+      %td=p.name
+      %td=link_to("#{p.user.name}","/homes/#{p.user.id}/show")
+      - if p.user_id == "#{current_user.id}"
+        %td=link_to("Edit Prescription","/prescriptions/#{p.id}/edit")
+      - else
+        %td

@@ -1,0 +1,82 @@
+:css 
+  .link{
+    background-color: green;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+
+- if flash[:notice] 
+  %div.alert= flash[:notice] 
+
+%link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
+
+
+
+-if current_user.role == "super admin"
+  %ol.list-group
+    %li.list-group-item= link_to('All Users List',homes_all_users_list_path)
+    %li.list-group-item= link_to('All Organisations List',homes_organisation_list_path)
+
+
+
+-else
+  %ul.list-group
+  - if current_user.role == "admin"
+    %p
+      %li.list-group-item= link_to('Doctors list',homes_doctors_index_path)
+      %li.list-group-item= link_to('Receptionists List',homes_receptionists_index_path)
+  - if current_user.role == "doctor" 
+    %table.table.table-hover.table-striped
+      %tr
+        %th Patient's Email ID
+        %th Patient Name
+        %th Write Prescription Link
+        %th View Prescription Link
+      - @patients.each do |p|
+        %tr
+          %td= p.email
+          %td=link_to("#{p.name}","/patients/#{p.id}/show")
+          %td=link_to("Write Prescription",prescriptions_new_path(:patient_id=> p.id))
+          %td=link_to("View Prescription","/prescriptions/#{p.id}/show")
+  - elsif current_user.role == "receptionist"
+    %table.table.table-hover.table-striped
+      %tr
+        %th Patient ID
+        %th Patient Name
+        %th Prescription Link
+      - @patients.each do |p|
+        %tr
+          %td= p.id
+          %td=link_to("#{p.name}","/patients/#{p.id}/show")
+          %td=link_to("View Prescription","/prescriptions/#{p.id}/show") 
+    %br
+    %b=link_to("Register New Patient",patients_new_patient_path,:class => "link") 
+
+    #myModal.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"data-dismiss" => "modal", :type => "button"} ×
+            %h4.modal-title Edit
+          .modal-body
+            %img{:src => "/assets/source.gif", :style => "height:30px;width:30px;text-align: center;"}
+          .modal-footer
+            %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
+
+  :javascript
+    $(".user_edit_picture").click(function(e)
+      {
+        var id = $(this).data('id'); 
+        $.ajax({ 
+          type: 'GET',
+          url: 'homes/'+id+"/edit_picture",
+          success: function(data)
+          {
+            $(".modal-body").html(data);
+          }, 
+          error: function(data){ alert('error'); } 
+        })
+    });
+

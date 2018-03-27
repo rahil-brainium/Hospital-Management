@@ -1,0 +1,56 @@
+%link{:rel=>"stylesheet", :href=>"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}
+%script{:src=>"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
+%script{:src=>"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+
+:css
+  .cb {clear:both;}
+  .fl {float:left;}
+  .mr10 {margin-right:10px;}
+= form_for (@prescription),url: prescriptions_create_path(:patient_id => @patient_id) do |f|
+  .input_fields_wrap
+    .field.fl.mr10
+      = f.label :"Medicine Type"
+      %br
+      = f.text_field :med_type,:class=>"form-control"
+    .field.fl.mr10
+      = f.label :name
+      %br
+      = f.text_field :name,:class=>"form-control"
+    .cb
+    %br
+    %br
+  %br
+  .field
+    =button_tag "Add more Medicines",:id => "add_field_button",:class=>"btn btn-info"
+  %br
+  .actions
+    =button_tag "Create Prescription",:class =>"btn btn-success"
+
+
+  :javascript
+    $(document).ready(function() {
+        var max_fields      = 10; 
+        var wrapper         = $(".input_fields_wrap"); 
+        var add_button      = $("#add_field_button");        
+        var x = 1;
+        $("#prescription_med_type").last().attr('name',"prescription_type[med_type1]");
+        $("#prescription_name").last().attr('name',"prescription_name[name1]");
+
+        $(add_button).click(function(e)
+        {
+          var field_len = $('.input_fields_wrap').length;
+          e.preventDefault();
+          if(x < max_fields)
+          {
+            x++;
+            var html = $(".input_fields_wrap").first().clone();
+            $(wrapper).last().after(html);
+            $("#prescription_med_type").last().attr('name',"prescription_type[med_type"+(field_len+1)+"]");
+            $("#prescription_name").last().attr('name',"prescription_name[name"+(field_len+1)+"]");
+          }
+        });  
+        $(wrapper).on("click",".remove_field", function(e){ 
+          e.preventDefault(); $(this).parent('div').remove(); 
+          x--;
+        })
+    });

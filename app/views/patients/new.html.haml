@@ -1,0 +1,26 @@
+= form_for (@patient),url: "/patients/create" do |f|
+  .field
+    = f.label :email
+    %br
+    = f.text_field :email,:class=>"form-control"
+  .field
+    = f.label :name
+    %br
+    = f.text_field :name,:class=>"form-control"
+  .field
+    = f.label :phone
+    %br
+    = f.text_field :phone,:class=>"form-control"
+  .field
+    = f.label :DiseaseType
+    %br
+    = f.text_field :disease_type,:class=>"form-control"
+  %br
+  .field
+    = f.label :Sex
+    = f.radio_button :sex, 'male',:required => true
+    Male
+    #{f.radio_button :sex, 'female',:required => true}
+    Female
+  .actions
+    = f.submit

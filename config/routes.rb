@@ -30,8 +30,37 @@ Rails.application.routes.draw do
   get 'patients/:id/edit' => 'patients#edit'
 
   patch 'patients/patient_update/:id' => 'patients#update'
+
+  post '/users/invitation' => 'homes#user_invite'
+
+  get 'homes/:id/edit_picture' => 'homes#edit_picture'
+
+  get 'homes/:id/crop_picture' => 'homes#crop_picture'
+
+  patch 'homes/:id/update_crop' => 'homes#update'
+
+  get 'homes/admin_list' => 'homes#admin_list'
+
+  get 'homes/all_users_list' => 'homes#all_users_list'
+
+  get 'homes/organisation_list' => 'homes#organisation_list'
+
+  get 'organisations/:id/show_users' => 'organisations#show_users'
+
+  get 'patients/new_patient' => 'patients#new'
+
+  post 'patients/create' => 'patients#create'
+
+  get 'prescriptions/new' => 'prescriptions#new'
+
+  post 'prescriptions/create' => 'prescriptions#create'
+
+  get 'patients/:id/show' => 'patients#show'
+  get 'prescriptions/:id/show' => 'prescriptions#show'
+
   
-  devise_for :users
+  devise_for :users,  :controllers => { invitations: 'invitations',:registrations => "registrations" }
+
   #resources :home
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,12 @@
+%link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}/
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
+%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+
+%table.table
+  %tr
+    %th Sl.no
+    %th Organisation Name
+  - @org.each do |o|
+    %tr 
+      %td=o.id
+      %td=link_to("#{o.name}","/organisations/#{o.id}/show_users")

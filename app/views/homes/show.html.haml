@@ -1,0 +1,55 @@
+%link{:rel=>"stylesheet", :href=> "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}
+%p
+  %strong Name:
+  = @user.name
+%p
+  %strong Email:
+  = @user.email 
+%p
+  %strong Phone:
+  = @user.phone 
+%p
+  %strong Sex:
+  = @user.sex 
+%p
+  %strong image:
+  = image_tag @user.avatar.url(:thumb)
+%p
+  %strong Address:
+  -if @user.address.present?
+    = @user.address.name.html_safe
+
+- if current_user.role == "admin" || current_user.role == @user.role
+  = link_to "edit" do 
+    Edit 
+    %span.glyphicon.glyphicon-pencil
+
+%div{:style=>'width: 800px;'}
+  %div#geolocation{:style=>'width: 500px; height: 500px;'}
+
+
+
+:javascript
+  var geocoder = new google.maps.Geocoder();
+  var add = "#{@user.address.present?}"
+  address = "#{@user.address.present? ? @user.address.name : "Branium Infotech,Kolkata"}"
+  if(add == "true"){
+    geocoder.geocode( { 'address': address}, function(results, status) {
+
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();      
+        var handler = Gmaps.build('Google');
+        handler.buildMap({ internal: {id: 'geolocation'}}, function(){
+        var markers = handler.addMarkers([
+          { lat: latitude, lng: longitude}
+        ]);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+       });
+      } 
+    }); 
+  }
+ 
+ 
+    

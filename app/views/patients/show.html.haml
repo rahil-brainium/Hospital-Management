@@ -1,0 +1,37 @@
+%p
+  %strong Name:
+  = @patient.name 
+
+%p
+  %strong Email:
+  = @patient.email 
+
+%p
+  %strong Phone:
+  = @patient.phone 
+
+%p
+  %strong Sex:
+  = @patient.sex 
+
+%p
+  %strong Disease Type:
+  = @patient.disease_type 
+%p
+  %strong image:
+  = image_tag @patient.avatar.url(:thumb)
+-if @patient.address.present?
+  %br
+    %strong Address:
+    = @patient.address.name.html_safe
+
+
+-if current_user.role == "receptionist" 
+  = link_to "#{@patient.id}/edit" do 
+    Edit 
+  %span.glyphicon.glyphicon-pencil
+
+
+
+ 
+    

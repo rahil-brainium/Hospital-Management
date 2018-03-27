@@ -11,5 +11,14 @@
  * file per style scope.
  *
  *= require_tree .
+
+*/= require datatables
  *= require_self
  */
+
+ .img_round
+ {
+ 	border-radius: 50%;
+ }
+
+ 

@@ -1,0 +1,53 @@
+%title Hospital
+= csrf_meta_tags 
+= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' 
+=javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+%script{ :src =>"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" }
+%script{:src=>"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+%link{:href => "//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"}
+%script{:src => "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"}
+%script{:src => "http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min.js"}
+%script{:src=>"//maps.google.com/maps/api/js?key=AIzaSyA5LrPhIokuSBO5EgKEcfu859gog6fRF8w"}
+%script{:src=>"//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js"}
+%link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
+%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}  
+%link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
+%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+
+%script{:src => "http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.js"}
+
+- if user_signed_in?
+  %nav.navbar.navbar-inverse
+    .container-fluid
+      .navbar-header.active
+        -if current_user.organisation.present?
+          %a.navbar-brand #{current_user.organisation.name}
+        -else 
+          %a.navbar-brand Super Admin
+      %ul.nav.navbar-nav
+        %li
+          = link_to('Main Menu',root_url)
+      %ul.nav.navbar-nav.navbar-right
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+            My Profile 
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              = link_to("Crop Profile Picture","/homes/#{current_user.id}/crop_picture")
+            %li
+              = link_to("Edit Profile","/homes/#{current_user.id}/edit")
+            %li
+              = link_to("View Profile","/homes/#{current_user.id}/show")
+            %li
+              = link_to('Logout', destroy_user_session_path, method: :delete,:class=>"glyphicon glyphicon-log-out")
+      %ul.nav.navbar-nav
+        - if current_user.role == "admin"
+          %li
+            = link_to('Doctors Index',homes_doctors_index_path)
+          %li
+            = link_to('Receptionists Index',homes_receptionists_index_path)
+= yield 
+= tinymce
+

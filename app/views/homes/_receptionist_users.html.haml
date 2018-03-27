@@ -1,0 +1,88 @@
+%link{:href => "//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"}
+%script{:src => "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"}
+#main_div
+  %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
+
+  = link_to "Invite Receptionsnist",new_user_invitation_path(:role => "receptionist")
+  %hr
+  %table.table.table-striped#datatable
+    %thead
+      %tr
+        %th Name
+        %th Email id
+        %th Phone Number
+        %th Sex
+        %th Address
+        %th
+        %th
+      %tbody
+        - @users.each do |u|
+          %tr{:id => "user_#{u.id}"}
+            -if current_user.organisation_id == u.organisation_id
+              %td
+                %span
+                  - if u.avatar.present?
+                    =image_tag u.avatar.url(:thumb),:width => "20px",:height => "20px",:class => "img_round"
+                  - else
+                    %img{:src => "https://cdn.onlinewebfonts.com/svg/img_87237.png",:width => "20px",:height => "20px"}
+                  = link_to "#{u.name}",controller: "homes", action: "show", id: "#{u.id}"
+              %td= u.email
+              %td= u.phone
+              %td= u.sex
+              %td= u.address.name.html_safe
+              - if current_user.role == "admin"
+                %td
+                  = link_to "#",data: {toggle: "modal", target: "#myModal",:id => u.id },:class => "user_edit" do
+                    %span.glyphicon.glyphicon-pencil
+                %td
+                  = link_to "javascript:void(0)",method: :delete,:class =>"delete_receptionist_ajax","data-id" => u.id do
+                    %span.glyphicon.glyphicon-trash            
+
+  #myModal.modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"data-dismiss" => "modal", :type => "button"} ×
+          %h4.modal-title Edit
+        .modal-body
+          %img{:src => "/assets/source.gif", :style => "height:30px;width:30px;text-align: center;"}
+        .modal-footer
+          %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
+
+  :javascript
+    $(".user_edit").click(function(e)
+      {
+        var id = $(this).data('id'); 
+        $.ajax({ 
+          type: 'GET',
+          url: id+"/edit",
+          success: function(data)
+          {
+
+            $(".modal-body").html(data);
+            $(".edit_link").hide();
+          }, 
+          error: function(data){ alert('error'); } 
+        })
+      })
+
+    $(".delete_receptionist_ajax").click(function(e)
+      { 
+        if(confirm("Are you sure..???")){
+          var id = $(this).data('id'); 
+          $.ajax({ 
+            type: 'DELETE',
+            url: "/homes/"+id,
+            success: function(data){
+            $("#user_"+id).fadeOut();
+          }, 
+          error: function(data){ alert('error'); } })
+        }
+      })
+      
+    $(document).ready(function(){
+      $('#datatable').DataTable();
+    });
+
+

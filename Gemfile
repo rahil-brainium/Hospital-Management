@@ -1,6 +1,12 @@
 source 'https://rubygems.org'
 
+gem 'gmaps4rails'
+gem 'tinymce-rails'
 gem 'devise'
+gem 'jquery-datatables'
+gem 'will_paginate', '~> 3.1.0'
+gem 'devise_invitable', '~> 1.7.0'
+gem "paperclip", "~> 5.2.1"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.8'
 # Use sqlite3 as the database for Active Record
@@ -23,6 +29,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.3.7'
+gem 'haml', '~> 5.0', '>= 5.0.4'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -46,3 +53,5 @@ group :development do
   gem 'spring'
 end
 
+gem "recaptcha", require: "recaptcha/rails"
+gem 'simple_captcha2', require: 'simple_captcha'

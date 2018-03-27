@@ -1,0 +1,35 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<% if flash[:notice] %>
+	<div class="notice"><%= flash[:notice] %></div>
+<% end %>
+<h2>Invite <%= @role %></h2>
+
+<%= form_for resource, :as => resource_name, :url => user_invitation_path(:role => @role), :html => {:method => :post} do |f| %>
+  <%= devise_error_messages! %>
+
+<% resource.class.invite_key_fields.each do |field| -%>
+  <p><%= f.label field %><br />
+  <%= f.email_field field , :required => true,:class=>"form-control" %></p>
+<% end -%>
+
+  <p><%= f.submit "Invite",:class =>"btn btn-success" %></p>
+<% end %>
+<script>
+	$(document).ready(function(){
+    $('#new_user').on('submit', function(e){
+        var email = $('#user_email').val();
+        if (email == "")
+        {
+            alert("Email field cant be blank");
+        }
+        else
+        {
+        	this.submit();
+        }
+    });
+});
+</script>

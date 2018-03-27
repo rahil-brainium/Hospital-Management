@@ -1,0 +1,123 @@
+%script{ :src =>"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" }
+- if flash[:notice] 
+  %div.notice= flash[:notice] 
+=form_for (@patient), url: "/patients/patient_update/#{@patient.id}",:html => {multipart: true} do |f| 
+  %div.field
+    %p.name
+    = f.label :Name
+    = f.text_field :name,:required => true,:class=>"form-control" 
+
+  %div.field
+    %p.sex
+    = f.label :sex
+    = f.radio_button :sex, 'male',:required => true 
+    male
+    = f.radio_button :sex, 'female',:required => true 
+    female
+
+  %div.field
+    %p.phone
+    = f.label :Phone
+    = f.text_field :phone,:required => true,:class=>"form-control" 
+
+  %div.field
+    %p.d_type
+    = f.label :Disease_Type
+    = f.text_field :disease_type,:required => true,:class=>"form-control" 
+  %div.field
+    %p
+    =f.label :Photo
+    = f.file_field :avatar 
+
+  %div.field
+    %p
+    = f.fields_for @patient.address do |a| 
+      = a.label :Address
+      = a.text_area :name ,:class => "tinymce"
+      
+
+  %div.actions
+    %p
+    = f.submit
+
+:javascript
+  $(document).ready( function(e) 
+  {
+    var id = "#{@patient.id}"
+    $('.edit_patient').on('submit', function(e)
+    {
+      var patient_name = $('#patient_name').val();
+      var patient_phone = $('#patient_phone').val();
+      var patient_sex = $(".edit_patient input[type='radio']:checked").val();
+      var patient_disease_type = $('#patient_disease_type').val();
+      var phoneno = /[0-9]{10}/;
+      var p_phone = parseInt(patient_phone);
+      //alert(patient_phone);
+
+
+      if(patient_name == "" && patient_phone == "" && patient_sex == undefined && patient_disease_type == "" )
+      {
+        $("#patient_name").css('border', '3px solid red');
+        $(".name").text("Please enter your name!!");
+
+        $("#patient_phone").css('border', '3px solid red');
+        $(".phone").text("Please enter your phone number!!");
+
+        $("#patient_disease_type").css('border', '3px solid red');
+        $(".d_type").text("Please enter Disease type!!");
+
+        $(".sex").text("Please select sex!!");
+
+        e.preventDefault();
+      }
+      if(patient_name == "")
+      {
+        $("#patient_name").css('border', '3px solid red');
+        $(".name").text("Please enter your name!!");
+        e.preventDefault();
+        
+      }
+      if(patient_phone == "")
+      {
+        $("#patient_phone").css('border', '3px solid red');
+        $(".phone").text("Please enter your phone number!!");
+        e.preventDefault();
+        
+      }
+      if(patient_sex == undefined)
+      {
+        $(".sex").text("Please select sex");
+        e.preventDefault();
+      }
+      if(patient_disease_type == "")
+      {
+        $("#patient_disease_type").css('border', '3px solid red');
+        $(".d_type").text("Please enter Disease type!!");
+        e.preventDefault();
+      }
+      if(!phoneno.test(p_phone))
+      {
+        alert("Enter correct number format");
+        e.preventDefault();
+      }
+
+    });
+
+    $("#patient_name").keypress(function(){
+      $("#patient_name").css('border', '1px solid grey');
+      $( ".name" ).empty();
+    });
+    $("#patient_phone").keypress(function(){
+      $("#patient_phone").css('border', '1px solid grey');
+      $( ".phone" ).empty();
+    });
+    $("#patient_disease_type").keypress(function(){
+      $("#patient_disease_type").css('border', '1px solid grey');
+      $( ".d_type" ).empty();
+    });
+
+
+  });
+
+
+  /[0-9]{10}/.test(8017124739)

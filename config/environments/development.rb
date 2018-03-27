@@ -30,12 +30,24 @@ Rails.application.configure do
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
+  Paperclip.options[:command_path] = "/usr/bin/"
+  #Paperclip.options[:command_path] = 'C:\Program Files (x86)\GnuWin32\bin'
+  #Paperclip.options[:whiny_thumbnails] = true
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  ActionMailer::Base.smtp_settings = {
+  :address        => 'smtp.gmail.com',
+  :domain         => 'mail.google.com',
+  :port           => 587,
+  :user_name      => 'rahil.brainium@gmail.com',
+  :password       => 'rojinadutta123',
+  :authentication => :plain,
+  :enable_starttls_auto => true
+}
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

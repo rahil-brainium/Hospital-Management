@@ -1,32 +1,156 @@
-<%= form_for (@user), url: "/homes/users_update/#{@user.id}",:id =>"my_form",:remote => true do |f| %>
-<div class="field">
-  <%= f.label :Name %>:
-  <%= f.text_field :name %>
-</div>
-<div class="field">
-  <%= f.label :sex %>
-  <%= f.radio_button :sex, 'male', :checked => true %> male
-  <%= f.radio_button :sex, 'female' %> female
-</div>
-<div class="field">
-  <%= f.label :Phone %>:
-  <%= f.text_field :phone %>
-</div>
-<div class="actions">
-  <%= f.submit %>
-</div>
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'  %>
+<%=javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<%= link_to 'Back', '/homes/'+"#{@user.id}"+'/show', :class => "edit_link"  %>
+<% if flash[:notice]  %>
+  <div class="notice">
+    <%= flash[:notice]  %>
+  </div>
+<% end %>
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+      <%= pluralize(@user.errors.count, "error") %>
+      prohibited this user from being saved:
+    </h2>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li>
+          <%= msg %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_for (@user), url: "/homes/users_update/#{@user.id}", :html => {:class =>"my_form",multipart: true},:remote => true do |f| %>
+
+  <div class="field">
+    <p class="name"></p>
+    <%= f.label :Name  %>
+    <%= f.text_field :name,:required => true  %>
+  </div>
+
+  <div class="field">
+    <p class="phone"></p>
+    <%= f.label :Phone  %>
+    <%= f.text_field :phone,:required => true  %>
+  </div>
+
+  <div class="field">
+    <p class="sex"></p>
+    <%= f.label :Sex %>
+    <%= f.radio_button :sex, 'male',:required => true  %>
+    Male
+    <%= f.radio_button :sex, 'female',:required => true  %>
+    Female
+  </div>
+
+  <div class="field">
+    <p></p>
+    <%= f.label :Photo %>
+    <%= f.file_field :avatar %>
+  </div>
+  <% if @user.address.present? %>
+    <div class="field">
+      <p></p>
+      <%= f.fields_for @user.address do |a| %>
+        <%= a.label :Address %>
+        <%= a.text_area :name ,:class => "tinymce" %>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="actions">
+    <p></p>
+    <%= f.submit 'Submit',:class => "form_submit" %>
+  </div>
+
 <% end %>
 
-
 <script>
-  var id = <%= @user.id %>
-  $("#edit_user_"+id).on("submit", function(event){
-    $.ajax({
-      success: function(response){
-        console.log(response);
-        //$("#user_"+id).fadeIn();
-        $("#new").replaceWith(response);
+  
+  $(document).ready( function(e) {
+    var id = "#{@user.id}"
+    $('#my_form').on('submit', function(e)
+    {
+      var user_name = $('#user_name').val();
+      var user_phone = $('#user_phone').val();
+      var user_sex = $(".my_form input[type='radio']:checked").val();
+      var phoneno = /[0-9]{10}/;
+      var p_phone = parseInt(user_phone);
+      if(user_phone == "" && user_name == "" && user_sex == undefined)
+      {
+        $("#user_name").css('border', '3px solid red');
+        $(".name").text("Please enter your name!!");
+        $("#user_phone").css('border', '3px solid red');
+        $(".phone").text("Please enter your phone number!!");
+        $(".sex").text("Please select sex!!");
+        e.preventDefault();
+        return;
+      }
+      if(user_name == "")
+      {
+        $("#user_name").css('border', '3px solid red');
+        $(".name").text("Please enter your name!!");
+        e.preventDefault();
+        return;
+      }
+      if(user_phone == "")
+      {
+        $("#user_phone").css('border', '3px solid red');
+        $(".phone").text("Please enter your phone number!!");
+        e.preventDefault();
+        return;
+      }
+
+      if(user_sex == "")
+      {
+        $(".sex").text("Please select sex");
+        e.preventDefault();
+        return;
+      }
+      if(!phoneno.test(p_phone))
+      {
+        alert("Enter correct number format");
+        e.preventDefault();
       }
     });
-  })
+
+    $("#user_name").keypress(function(){
+      $("#user_name").css('border', '1px solid grey');
+      $( ".name" ).empty();
+    });
+    $("#user_phone").keypress(function(){
+      $("#user_phone").css('border', '1px solid grey');
+      $( ".phone" ).empty();
+    });
+
+    
+
+
+  });
+  
+  // $(".my_form").bind("ajax:success", function(event,xhr,settings)
+  //   {
+  //     //alert(xhr.responseText);
+  //     // $('body').removeClass('modal-open');
+  //     // $('.modal-backdrop').remove();
+  //     // $("#main_div").html(xhr.responseText);
+  //   });
+
+  $(".my_form").on("submit", function(event){
+    $.ajax({
+      type: "POST",
+      url: this.action,
+      data: $(this).serialize(),
+      success: function(response) {
+
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        $("#main_div").html(response);
+      }
+    });
+    event.preventDefault();
+  });
+
+
 </script>
