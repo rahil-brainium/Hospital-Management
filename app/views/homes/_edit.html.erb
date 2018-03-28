@@ -1,7 +1,6 @@
 <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'  %>
 <%=javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<%= link_to 'Back', '/homes/'+"#{@user.id}"+'/show', :class => "edit_link"  %>
 <% if flash[:notice]  %>
   <div class="notice">
     <%= flash[:notice]  %>

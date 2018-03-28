@@ -24,7 +24,7 @@
         -if current_user.organisation.present?
           %a.navbar-brand #{current_user.organisation.name}
         -else 
-          %a.navbar-brand Super Admin
+          %a.navbar-brand Super Admin Dashboard
       %ul.nav.navbar-nav
         %li
           = link_to('Main Menu',root_url)
