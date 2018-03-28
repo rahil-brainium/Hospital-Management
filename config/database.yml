@@ -1,16 +1,16 @@
 development:
   adapter: postgresql
-  database: my_database_development
+  database: database_dev
   pool: 5
   timeout: 5000
 test:
   adapter: postgresql
-  database: my_database_test
+  database: database_test
   pool: 5
   timeout: 5000
 
 production:
   adapter: postgresql
-  database: my_database_production
+  database: database_production
   pool: 5
   timeout: 5000
