@@ -28,10 +28,10 @@ class HomesController < ApplicationController
   def destroy
     @user = User.where("id = ?",params[:id]).first
     restrict_access if @user.organisation_id != current_user.organisation_id
-    # if @user.present?
-    # @user.destroy
-    render text: "success"
-    # end
+    if @user.present?
+      @user.destroy
+      render text: "success"
+    end
   end
 
   def update
