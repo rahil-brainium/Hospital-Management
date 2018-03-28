@@ -35,7 +35,6 @@ class HomesController < ApplicationController
   end
 
   def update
-    debugger
     @user = User.find(params[:id])
     restrict_access if @user.organisation_id != current_user.organisation_id
     if params[:user][:address].present?
