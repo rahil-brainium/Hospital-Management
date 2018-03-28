@@ -37,17 +37,19 @@ Rails.application.configure do
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
-  config.assets.raise_runtime_errors = true
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  host = 'intense-plains-22580.herokuapp.com'
+  config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
-  :address        => 'smtp.gmail.com',
-  :domain         => 'mail.google.com',
-  :port           => 587,
-  :user_name      => 'rahil.brainium@gmail.com',
-  :password       => 'rojinadutta123',
-  :authentication => :plain,
-  :enable_starttls_auto => true
-}
+    :address        => 'smtp.sendgrid.net',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => 'rahil.brainium@gmail.com',
+    :password       => 'rojinadutta123@123',
+    :domain         => 'heroku.com',
+    :enable_starttls_auto => true
+  }
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
