@@ -46,7 +46,7 @@ class PrescriptionsController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
-    @prescriptions = Prescription.where("patient_id =?",@patient.id)
+    @prescription = Prescription.where("patient_id =?","#{@patient.id}")
   end
 
 

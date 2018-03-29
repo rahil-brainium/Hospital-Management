@@ -8,8 +8,7 @@
     %th Prescribed By
     -if current_user.role != "receptionist"
       %th Prescription Edit Link
-  - @prescriptions.each do |p|
-    
+  - @prescription.each do |p|
     %tr 
       %td=p.med_type
       %td=p.name
