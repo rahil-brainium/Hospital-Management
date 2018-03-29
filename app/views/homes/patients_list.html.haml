@@ -5,7 +5,9 @@
   %tr
     %th Patient ID
     %th Patient Name
+    %th Patient Email
   - @patients.each do |p|
     %tr 
       %td=p.id
       %td=p.name
+      %td=p.email
