@@ -22,7 +22,11 @@ class HomesController < ApplicationController
     @user = User.find(params[:id])
     address = Address.where("addressable_id = ?", "#{@user.id}")
     restrict_access if @user.organisation_id != current_user.organisation_id
-    render :partial => 'edit' if request.xhr?
+    if request.xhr?
+      render :partial => 'edit'
+    else
+      render template: "homes/edit"
+    end
   end
 
   def destroy

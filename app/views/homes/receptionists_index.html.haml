@@ -1,8 +1,9 @@
 %div#main_div
   %link{:href => "//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"}
   %script{:src => "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"}
-  %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
-  = link_to "Invite Receptionist",new_user_invitation_path(:role => "receptionist")
+  %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/css/bootstrap-modal.min.css"}
+  %script{:src=>"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/js/bootstrap-modal.min.js"}
+  %h4= link_to "Invite Receptionist",new_user_invitation_path(:role => "receptionist")
   %hr
   %table.table.table-hover.table-striped#datatable
     %thead
@@ -46,7 +47,7 @@
           %div.modal-header
             %button.close{"data-dismiss" => "modal", :type => "button"} ×
             %h4.modal-title Edit
-          %div.modal-body
+          %div#modal-body
             %img{:src => "/assets/source.gif", :style => "height:30px;width:30px;text-align: center;"}/
           %div.modal-footer
             %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
@@ -56,15 +57,18 @@
       { 
         var id = $(this).data('id'); 
         $.ajax({ 
+          async: true,
           type: 'GET',
           url: id+"/edit",
           success: function(data)
           {
-            $(".modal-body").html(data);
+            //console.log(data);
+            //$("#modal-body").show();
+            $("#modal-body").html(data);
           }, 
           error: function(data){ alert('error'); } 
         })
-      })
+      });
     
     $(".delete_receptionist_ajax").click(function(e)
       { 

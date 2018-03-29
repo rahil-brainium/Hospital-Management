@@ -1,8 +1,8 @@
-%link{:href => "//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"}
-%script{:src => "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"}
 #main_div
-  %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
-
+  %link{:href => "//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"}
+  %script{:src => "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"}
+  %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/css/bootstrap-modal.min.css"}
+  %script{:src=>"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.6/js/bootstrap-modal.min.js"}
   = link_to "Invite Receptionsnist",new_user_invitation_path(:role => "receptionist")
   %hr
   %table.table.table-striped#datatable
@@ -29,7 +29,10 @@
               %td= u.email
               %td= u.phone
               %td= u.sex
-              %td= u.address.name.html_safe
+              - if u.address.present?
+                %td= u.address.name.html_safe
+              -else
+                %td
               - if current_user.role == "admin"
                 %td
                   = link_to "#",data: {toggle: "modal", target: "#myModal",:id => u.id },:class => "user_edit" do
