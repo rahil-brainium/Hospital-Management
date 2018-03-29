@@ -58,6 +58,8 @@ Rails.application.routes.draw do
   get 'patients/:id/show' => 'patients#show'
   get 'prescriptions/:id/show' => 'prescriptions#show'
 
+  get 'homes/patients_list' => 'homes#org_patients'
+
   
   devise_for :users,  :controllers => { invitations: 'invitations',:registrations => "registrations" }
 

@@ -130,6 +130,11 @@ class HomesController < ApplicationController
     @patients = Patient.all
   end
 
+  def org_patients
+    @patients = Patient.where("organisation_id = ?", "#{current_user.organisation_id}")
+    render template: "homes/patients_list"
+  end
+
 
   private
   def user_all

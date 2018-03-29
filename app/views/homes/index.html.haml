@@ -26,6 +26,7 @@
     %p
       %li.list-group-item= link_to('Doctors list',homes_doctors_index_path)
       %li.list-group-item= link_to('Receptionists List',homes_receptionists_index_path)
+      %li.list-group-item= link_to("Patient's List",homes_patients_list_path)
   - if current_user.role == "doctor" 
     %table.table.table-hover.table-striped
       %tr
