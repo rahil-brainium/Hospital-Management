@@ -6,7 +6,6 @@ class PatientsController < ApplicationController
     @patient = Patient.find(params[:id])
   end
   def update
-    debugger
     @patient = Patient.find(params[:id])
     patient_address = params[:patient][:address][:name]
     address = Address.where("addressable_id = ?", "#{@patient.id}")
@@ -27,11 +26,9 @@ class PatientsController < ApplicationController
   end
 
   def create
-    debugger
     @patient = Patient.create(patient_params)
     patient_org_id = current_user.organisation_id
     @patient.organisation_id = patient_org_id
-
     @patient.save
     redirect_to root_url
   end
