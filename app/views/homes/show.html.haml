@@ -1,4 +1,14 @@
+:css
+  .clr {
+    color:red
+  }
+
 %link{:rel=>"stylesheet", :href=> "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}
+- if flash[:notice] 
+  %div.notice
+  %b.clr= flash[:notice] 
+%br
+%br
 %p
   %strong Name:
   = @user.name

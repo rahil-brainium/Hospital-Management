@@ -99,7 +99,12 @@ class HomesController < ApplicationController
   def crop_picture
     @user = User.find(params[:id])
     restrict_access if @user.organisation_id != current_user.organisation_id
-    render template: "homes/crop_picture"
+    if @user.avatar.present?
+      render template: "homes/crop_picture"
+    else
+      flash[:notice] = "Please upload a profile picture first"
+      redirect_to :back
+    end
   end
 
   def update_crop
