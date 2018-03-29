@@ -1,7 +1,6 @@
 class PrescriptionsController < ApplicationController
 	before_action :prescriptions_all
   def edit
-    debugger
     @prescription = Prescription.find(params[:id])
   end
 
