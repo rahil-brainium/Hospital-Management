@@ -3,7 +3,7 @@ class HomesController < ApplicationController
   before_action :user_all, :except => [:update]
   #before_filter :restrict_access, :only => [:edit,:delete,:update,:show]
   def index
-    @prescriptions = Prescription.paginate(:page => params[:page], :per_page => 2)
+    #@prescriptions = Prescription.paginate(:page => params[:page], :per_page => 2)
     @patients = Patient.where("organisation_id =? ","#{current_user.organisation_id}")
   end
 

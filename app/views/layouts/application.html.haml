@@ -41,7 +41,7 @@
             %li
               = link_to("View Profile","/homes/#{current_user.id}/show")
             %li
-              = link_to('Logout', destroy_user_session_path, method: :delete,:class=>"glyphicon glyphicon-log-out")
+              = link_to('Logout', destroy_user_session_path, method: :delete)
       %ul.nav.navbar-nav
         - if current_user.role == "admin"
           %li
