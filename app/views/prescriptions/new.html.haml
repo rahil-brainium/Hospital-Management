@@ -5,6 +5,7 @@
 :css
   .cb {clear:both;}
   .fl {float:left;}
+
   .mr10 {margin-right:10px;}
 = form_for (@prescription),url: prescriptions_create_path(:patient_id => @patient_id) do |f|
   .input_fields_wrap
@@ -16,6 +17,10 @@
       = f.label :name
       %br
       = f.text_field :name,:class=>"form-control"
+    .field.fl.mr10
+      = f.label :quantity
+      %br
+      = f.select :quantity, options_for_select([1,2,3,4,5])
     .cb
     %br
     %br
@@ -35,6 +40,7 @@
         var x = 1;
         $("#prescription_med_type").last().attr('name',"prescription_type[med_type1]");
         $("#prescription_name").last().attr('name',"prescription_name[name1]");
+        $("#prescription_quantity").last().attr('name',"prescription_quantity[quantity1]");
 
         $(add_button).click(function(e)
         {
@@ -43,14 +49,17 @@
           if(x < max_fields)
           {
             x++;
-            var html = $(".input_fields_wrap").first().clone();
+            var html = $(".input_fields_wrap").last().clone();
             $(wrapper).last().after(html);
+
             $("#prescription_med_type").last().attr('name',"prescription_type[med_type"+(field_len+1)+"]");
+
             $("#prescription_name").last().attr('name',"prescription_name[name"+(field_len+1)+"]");
+
+            $("#prescription_quantity").last().attr('name',"prescription_quantity[quantity"+(field_len+1)+"]");
+
+
+
           }
         });  
-        $(wrapper).on("click",".remove_field", function(e){ 
-          e.preventDefault(); $(this).parent('div').remove(); 
-          x--;
-        })
     });

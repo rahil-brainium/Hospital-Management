@@ -1,7 +1,9 @@
 class PrescriptionsController < ApplicationController
 	before_action :prescriptions_all
+  skip_before_action :verify_authenticity_token
   def edit
     @prescription = Prescription.find(params[:id])
+    render :partial => 'prescriptions/edit'
   end
 
   def update
@@ -16,9 +18,14 @@ class PrescriptionsController < ApplicationController
   end
     
   def destroy
-    @prescription = Prescription.where("id = ?",params[:id]).first
-    @prescription.destroy if @prescription.present?
-    redirect_to "/homes/index"
+    id = params[:id]
+    p "===="
+    p id
+    @prescription = Prescription.where("id = ?",id).first
+    if @prescription.present?
+      @prescription.destroy
+      render text: "success"
+    end
   end
 
   def new
@@ -28,14 +35,19 @@ class PrescriptionsController < ApplicationController
   end
 
   def create
+    p "=================="
+    p params
+    p "===================="
     prescription_types = params[:prescription_type]
     prescription_names = params[:prescription_name]
+    prescription_quantity = params[:prescription_quantity]
     p_id = params[:patient_id]
     user_id = current_user.id
     prescription_types.keys.each_with_index do |key, index| 
       value = prescription_types.values[index]
       pname = prescription_names.values[index]
-      @prescription = Prescription.create(:med_type => value , :name => pname )
+      pquan = prescription_quantity.values[index]
+      @prescription = Prescription.create(:med_type => value , :name => pname,:quantity => pquan)
       @prescription.organisation_id = current_user.organisation_id
       @prescription.user_id = current_user.id
       @prescription.patient_id = p_id
@@ -56,6 +68,6 @@ class PrescriptionsController < ApplicationController
   	 @prescription = Prescription.all
     end
   def prescription_params
-     params.require(:prescription).permit(:name, :med_type,:user_id,:patient_id)
+     params.require(:prescription).permit(:name, :med_type,:user_id,:patient_id,:quantity)
   end
 end

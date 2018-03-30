@@ -1,19 +1,71 @@
 %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}/
 %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
-%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"}
+
 %table.table
   %tr
     %th Medicine Type
     %th Medicine Name
+    %th Quantity(Dose per Day)
     %th Prescribed By
     -if current_user.role != "receptionist"
       %th Prescription Edit Link
+      %th Prescription Remove Link
   - @prescription.each do |p|
-    %tr 
+    %tr{:id => "prescription_#{p.id}"}
       %td=p.med_type
       %td=p.name
+      %td=p.quantity
       %td=link_to("#{p.user.name}","/homes/#{p.user.id}/show")
       - if p.user_id == "#{current_user.id}"
-        %td=link_to("Edit Prescription","/prescriptions/#{p.id}/edit")
+        %td.textalign 
+          =link_to "javascript:void(0)",data: {toggle: "modal", target: "#myModal",:id => p.id },:class => "prescription_edit" do
+            %span.glyphicon.glyphicon-pencil
+        %td.textalign
+          =link_to "javascript:void(0)",method: :delete,:class =>"delete_prescription_ajax","data-id" => p.id do
+            %span.glyphicon.glyphicon-trash
       - else
         %td
+        %td
+%div.container
+  %div#myModal.modal.fade{:role => "dialog"}
+    %div.modal-dialog
+      %div.modal-content
+        %div.modal-header
+          %button.close{"data-dismiss" => "modal", :type => "button"} ×
+          %h4.modal-title Edit
+        %div#modal-body
+          %img{:src => "/assets/source.gif", :style => "height:30px;width:30px;text-align: center;"}/
+        %div.modal-footer
+          %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+:javascript
+  $(".delete_prescription_ajax").click(function(e)
+  { 
+    if(confirm("Are you sure..???"))
+    {
+      var id = $(this).data('id');
+      $.ajax({ 
+        type: 'DELETE',
+        url: "/prescriptions/"+id,
+        success: function(data){
+        $("#prescription_"+id).fadeOut();
+      }, 
+      error: function(data){ alert('error'); } })
+    }
+  });
+  $(".prescription_edit").click(function(e)
+    { 
+      var id = $(this).data('id'); 
+      $.ajax({ 
+        async: true,
+        type: 'GET',
+        url: "/prescriptions/"+id+"/edit",
+        success: function(data)
+        {
+          //console.log(data);
+          //$("#modal-body").show();
+          $("#modal-body").html(data);
+        }, 
+        error: function(data){ alert('error'); } 
+      })
+    });
