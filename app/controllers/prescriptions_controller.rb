@@ -19,8 +19,6 @@ class PrescriptionsController < ApplicationController
     
   def destroy
     id = params[:id]
-    p "===="
-    p id
     @prescription = Prescription.where("id = ?",id).first
     if @prescription.present?
       @prescription.destroy
@@ -35,9 +33,6 @@ class PrescriptionsController < ApplicationController
   end
 
   def create
-    p "=================="
-    p params
-    p "===================="
     prescription_types = params[:prescription_type]
     prescription_names = params[:prescription_name]
     prescription_quantity = params[:prescription_quantity]
