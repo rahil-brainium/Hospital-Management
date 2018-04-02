@@ -12,7 +12,7 @@
     .field.fl.mr10
       = f.label :"Medicine Type"
       %br
-      = f.text_field :med_type,:class=>"form-control"
+      = f.select :med_type, options_for_select(["Syrup","Tablet","Injectiton"])
     .field.fl.mr10
       = f.label :name
       %br

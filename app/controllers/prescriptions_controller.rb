@@ -13,7 +13,7 @@ class PrescriptionsController < ApplicationController
       redirect_to :back
     else
       prescription.update_attributes(prescription_params)
-      redirect_to "/homes/index"
+      redirect_to root_url
     end
   end
     
