@@ -52,6 +52,8 @@
             var html = $(".input_fields_wrap").first().clone();
 
             $(wrapper).last().after(html);
+            
+            $('#prescription_name').val('');
 
             $("#prescription_med_type").last().attr('name',"prescription_type[med_type"+(field_len+1)+"]");
 
