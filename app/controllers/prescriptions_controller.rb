@@ -15,7 +15,8 @@ class PrescriptionsController < ApplicationController
       else
         p_id = prescription.patient_id
         prescription.update_attributes(prescription_params)
-        render partial: "show"
+        @prescription = Prescription.where("patient_id =?","#{p_id}")
+        render partial: 'show'
       end
     end
   end
