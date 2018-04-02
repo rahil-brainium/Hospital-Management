@@ -8,12 +8,15 @@ class PrescriptionsController < ApplicationController
 
   def update
     prescription = Prescription.where("id = ?",params[:id]).first
-    if params[:prescription][:med_type] == "" || params[:prescription][:name] == ""
-      flash[:notice] = "please fill in the details"
-      redirect_to :back
-    else
-      prescription.update_attributes(prescription_params)
-      redirect_to root_url
+    if request.xhr?
+      if params[:prescription][:med_type] == "" || params[:prescription][:name] == ""
+        flash[:notice] = "please fill in the details"
+        redirect_to :back
+      else
+        p_id = prescription.patient_id
+        prescription.update_attributes(prescription_params)
+        render partial: "show"
+      end
     end
   end
     

@@ -67,3 +67,17 @@
       $("#prescription_name").css('border', '1px solid grey');
       $( ".name" ).empty();
     });
+    $(".edit_prescription").on("submit", function(event){
+    $.ajax({
+      type: "POST",
+      url: this.action,
+      data: $(this).serialize(),
+      success: function(response) {
+
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        $("#main_div").html(response);
+      }
+    });
+    event.preventDefault();
+  });
