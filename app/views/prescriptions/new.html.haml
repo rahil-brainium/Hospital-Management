@@ -1,6 +1,6 @@
-%link{:rel=>"stylesheet", :href=>"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"}
-%script{:src=>"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
-%script{:src=>"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"}
+%link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
+%script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"}
+%script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"}
 
 :css
   .cb {clear:both;}
@@ -12,7 +12,7 @@
     .field.fl.mr10
       = f.label :"Medicine Type"
       %br
-      = f.select :med_type, options_for_select(["Syrup","Tablet","Injectiton"])
+      = f.select :med_type, options_for_select(["Syrup","Injection","Capsule","Tablet"])
     .field.fl.mr10
       = f.label :name
       %br
@@ -49,7 +49,8 @@
           if(x < max_fields)
           {
             x++;
-            var html = $(".input_fields_wrap").last().clone();
+            var html = $(".input_fields_wrap").first().clone();
+
             $(wrapper).last().after(html);
 
             $("#prescription_med_type").last().attr('name',"prescription_type[med_type"+(field_len+1)+"]");
@@ -57,9 +58,6 @@
             $("#prescription_name").last().attr('name',"prescription_name[name"+(field_len+1)+"]");
 
             $("#prescription_quantity").last().attr('name',"prescription_quantity[quantity"+(field_len+1)+"]");
-
-
-
           }
         });  
     });
