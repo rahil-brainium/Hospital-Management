@@ -5,9 +5,12 @@
     padding: 10px;
     text-align: center;
   }
+  .clr {
+    color:red
+  }
 
 - if flash[:notice] 
-  %div.alert= flash[:notice] 
+  %b.clr= flash[:notice] 
 
 %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", :rel => "stylesheet"}
 
