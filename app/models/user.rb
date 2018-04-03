@@ -7,7 +7,10 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :prescriptions
-  has_attached_file :avatar,:styles => { thumb: '100x100>' }, default_url: "/images/:style/missing.png",:processors => [:cropper]
+  has_attached_file :avatar, :styles  => { 
+    :small => {:geometry => "100x100#", :processors => [:cropper]}, 
+    :large => {:geometry => "500x500>"} 
+  }
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   #validates :name,:email,:role,:sex,:phone,presence: true
   #validates :phone , numericality: { only_integer: true, message: "Input integer only" }
@@ -32,7 +35,6 @@ class User < ActiveRecord::Base
 
   private
   def reprocess_avatar
-    # debugger
-    self.avatar.reprocess!
+    avatar.reprocess!
   end
 end

@@ -49,9 +49,12 @@
         <%= a.text_area :name ,:class => "tinymce" %>
       <% end %>
     </div>
+  <%else%>
+    <div class="field">
+      <%= text_area_tag :name ,"",:class => "tinymce" %>
+    </div>
   <% end %>
   <div class="actions">
-    <p></p>
     <%= f.submit 'Submit',:class => "form_submit" %>
   </div>
 <% end %>
@@ -113,13 +116,5 @@
       $( ".phone" ).empty();
     });
   });
-  // $(".my_form").bind("ajax:complete", function(event,xhr,settings)
-  //   {
-  //     alert(1)
-  //     // $('body').removeClass('modal-open');
-  //     // $('.modal-backdrop').remove();
-  //     // $("#main_div").html(xhr.responseText);
-  //   });
-
 
 </script>

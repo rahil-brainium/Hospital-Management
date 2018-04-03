@@ -81,6 +81,12 @@ class HomesController < ApplicationController
         redirect_to :back
       else
         User.invite!(:email => email,:role => role,:organisation_id => user_org)
+        p "================"
+        user = User.where("email =?",email)
+        p user 
+        p "=============================================="
+        p user.address
+        p "================================="
         flash[:notice] = "User has been invited succesfully"
         redirect_to :back
       end
