@@ -1,15 +1,14 @@
 class HomesController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :user_all, :except => [:update]
-  #before_filter :restrict_access, :only => [:edit,:delete,:update,:show]
   def index
-    #@prescriptions = Prescription.paginate(:page => params[:page], :per_page => 2)
+    
     @patients = Patient.where("organisation_id =? ","#{current_user.organisation_id}")
   end
 
   def doctors_index	
     role = params[:role]
-    #@users = User.paginate(:page => params[:page], :per_page => 5)
+    
     @users = User.doctors
     
   end
@@ -41,12 +40,10 @@ class HomesController < ApplicationController
   def update
     @user = User.find(params[:id])
     restrict_access if @user.organisation_id != current_user.organisation_id
-    if params[:user][:address].present?
-      user_address = params[:user][:address][:name]
-    end
     address = Address.where("addressable_id = ?", "#{@user.id}")
     @user.update_attributes(user_params)
     if params[:user][:address].present?
+      user_address = params[:user][:address][:name]
       @user.address.update_attribute(:name,user_address)
     end
     if request.xhr?
@@ -81,12 +78,8 @@ class HomesController < ApplicationController
         redirect_to :back
       else
         User.invite!(:email => email,:role => role,:organisation_id => user_org)
-        p "================"
-        user = User.where("email =?",email)
-        p user 
-        p "=============================================="
-        p user.address
-        p "================================="
+        @user = User.find_by_email(email)
+        Address.create(:addressable_id => "#{@user.id}",:name => "",:addressable_type => "User")
         flash[:notice] = "User has been invited succesfully"
         redirect_to :back
       end

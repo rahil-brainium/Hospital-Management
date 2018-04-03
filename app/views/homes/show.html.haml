@@ -42,7 +42,9 @@
 :javascript
   var geocoder = new google.maps.Geocoder();
   var add = "#{@user.address.present?}"
-  address = "#{@user.address.present? ? @user.address.name : "Branium Infotech,Kolkata"}"
+  address = "#{@user.address.present? ? @user.address.name.html_safe : ""}"
+  address = $(address).text();
+  alert(address);
   if(add == "true"){
     geocoder.geocode( { 'address': address}, function(results, status) {
 
