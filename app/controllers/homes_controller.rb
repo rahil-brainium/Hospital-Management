@@ -15,13 +15,31 @@ class HomesController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
-    address = Address.where("addressable_id = ?", "#{@user.id}")
-    restrict_access if @user.organisation_id != current_user.organisation_id
-    if request.xhr?
-      render :partial => 'edit'
+    @user = User.find_by_id(params[:id])
+    if @user.nil?
+      flash[:notice] = "User not found"
+      redirect_to root_url
     else
-      render template: "homes/edit"
+      address = Address.where("addressable_id = ?", "#{@user.id}")
+      restrict_access if @user.organisation_id != current_user.organisation_id
+      if request.xhr?
+        render :partial => 'edit'
+      else
+        render template: "homes/edit"
+      end
+    end
+  end
+
+  def show
+    @user = User.find_by_id(params[:id])
+    if @user.nil?
+      flash[:notice] = "User not found"
+      redirect_to root_url
+    else
+      address = Address.where("addressable_id = ?", "#{@user.id}")
+      if current_user.role != "super admin"
+        restrict_access if @user.organisation_id != current_user.organisation_id
+      end
     end
   end
 
@@ -56,18 +74,6 @@ class HomesController < ApplicationController
     end
   end
 
-  def show
-    @user = User.find_by_id(params[:id])
-    if @user.nil?
-      flash[:notice] = "User not found"
-      redirect_to root_url
-    else
-      address = Address.where("addressable_id = ?", "#{@user.id}")
-      if current_user.role != "super admin"
-        restrict_access if @user.organisation_id != current_user.organisation_id
-      end
-    end
-  end
 
   def user_invite
     email = params[:user][:email]
