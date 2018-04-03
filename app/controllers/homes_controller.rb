@@ -2,15 +2,12 @@ class HomesController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :user_all, :except => [:update]
   def index
-    
     @patients = Patient.where("organisation_id =? ","#{current_user.organisation_id}")
   end
 
   def doctors_index	
     role = params[:role]
-    
     @users = User.doctors
-    
   end
 
   def receptionists_index
@@ -60,10 +57,15 @@ class HomesController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-    address = Address.where("addressable_id = ?", "#{@user.id}")
-    if current_user.role != "super admin"
-      restrict_access if @user.organisation_id != current_user.organisation_id
+    @user = User.find_by_id(params[:id])
+    if @user.nil?
+      flash[:notice] = "User not found"
+      redirect_to root_url
+    else
+      address = Address.where("addressable_id = ?", "#{@user.id}")
+      if current_user.role != "super admin"
+        restrict_access if @user.organisation_id != current_user.organisation_id
+      end
     end
   end
 

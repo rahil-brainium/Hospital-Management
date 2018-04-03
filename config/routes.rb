@@ -60,7 +60,8 @@ Rails.application.routes.draw do
 
   get 'homes/patients_list' => 'homes#org_patients'
 
-  
+  match '*path', to: redirect{ |p, req| req.flash[:notice] = "No such url found!!!!"; '/' }, via: :all
+
   devise_for :users,  :controllers => { invitations: 'invitations',:registrations => "registrations" }
 
   #resources :home
