@@ -10,6 +10,10 @@ class RegistrationsController < Devise::RegistrationsController
         redirect_to :back
       else
         org = Organisation.create(:name => organisation_name)
+        org_auth_token = org.id.to_s + org.created_at.to_s
+        org_auth_token = Base64.strict_encode64(org_auth_token)
+        org.auth_token = org_auth_token
+        org.save
         @user.organisation_id = org.id
         @user.save
         redirect_to root_url
@@ -23,6 +27,6 @@ class RegistrationsController < Devise::RegistrationsController
 
   private
     def user_params
-      params.require(:user).permit(:email, :password,:password_confirmation)
+      params.require(:user).permit(:email, :password,:password_confirmation,:auth_token)
     end
 end 

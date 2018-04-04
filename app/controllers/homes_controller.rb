@@ -45,10 +45,15 @@ class HomesController < ApplicationController
 
   def destroy
     @user = User.where("id = ?",params[:id]).first
-    restrict_access if @user.organisation_id != current_user.organisation_id
-    if @user.present?
-      @user.destroy
-      render text: "success"
+    if @user.nil?
+      flash[:notice] = "User not found"
+      redirect_to root_url
+    else
+      restrict_access if @user.organisation_id != current_user.organisation_id
+      if @user.present?
+        @user.destroy
+        render text: "success"
+      end
     end
   end
 
@@ -98,19 +103,29 @@ class HomesController < ApplicationController
   end
 
   def edit_picture
-    @user = User.find(params[:id])
-    restrict_access if @user.organisation_id != current_user.organisation_id
-    render :partial => 'edit_picture'
+    @user = User.find_by_id(params[:id])
+    if @user.nil?
+      flash[:notice] = "User not found"
+      redirect_to root_url
+    else
+      restrict_access if @user.organisation_id != current_user.organisation_id
+      render :partial => 'edit_picture'
+    end
   end
 
   def crop_picture
-    @user = User.find(params[:id])
-    restrict_access if @user.organisation_id != current_user.organisation_id
-    if @user.avatar.present?
-      render template: "homes/crop_picture"
+    @user = User.find_by_id(params[:id])
+    if @user.nil?
+      flash[:notice] = "User not found"
+      redirect_to root_url
     else
-      flash[:notice] = "Please upload a profile picture first"
-      redirect_to :back
+      restrict_access if @user.organisation_id != current_user.organisation_id
+      if @user.avatar.present?
+        render template: "homes/crop_picture"
+      else
+        flash[:notice] = "Please upload a profile picture first"
+        redirect_to :back
+      end
     end
   end
 
